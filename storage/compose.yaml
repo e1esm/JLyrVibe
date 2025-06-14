@@ -1,0 +1,21 @@
+services:
+  storage:
+    container_name: "music-storage"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - infrastructure_jlyrvibe
+    ports:
+      - "8080:8080"
+  flyway:
+    image: flyway/flyway:latest
+    networks:
+      - infrastructure_jlyrvibe
+    entrypoint: [ "flyway", "-url=jdbc:postgresql://postgres:5432/jlyrvibe?sslmode=disable", "-user=user", "-password=password", "-baselineOnMigrate=true", "migrate" ]
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+
+networks:
+  infrastructure_jlyrvibe:
+    external: true

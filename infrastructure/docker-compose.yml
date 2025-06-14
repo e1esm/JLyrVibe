@@ -1,0 +1,33 @@
+services:
+    postgres:
+      image: postgres:alpine
+      networks:
+        - jlyrvibe
+      env_file:
+        db.env
+      volumes:
+        - ./pgdata:/var/lib/postgresql/data/pgdata
+      ports:
+         - "5432:5432"
+    minio:
+      image: 'minio/minio:latest'
+      networks:
+        - jlyrvibe
+      ports:
+        - '9000:9000'
+        - '9090:9090'
+      environment:
+        MINIO_ROOT_USER: 'root'
+        MINIO_ROOT_PASSWORD: 'password'
+      volumes:
+        - 'minio:/data/minio'
+      command: minio server /data/minio --console-address ":9090"
+
+volumes:
+  pgdata:
+    driver: local
+  minio:
+    driver: local
+
+networks:
+  jlyrvibe:
