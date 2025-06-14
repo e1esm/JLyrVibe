@@ -28,7 +28,7 @@ public class FileController {
             @RequestPart(name = "file") MultipartFile file,
             @RequestParam(name = "file_type") String fileType,
     @RequestParam(name = "artist_id") UUID artistID) throws IOException {
-        log.debug(String.format("Uploading file: %s of type: %s", file.getOriginalFilename(), fileType));
+        log.info(String.format("Uploading file: %s of type: %s", file.getOriginalFilename(), fileType));
 
         this.fileService.saveFile(file.getInputStream(), FileType.valueOf(fileType), file.getOriginalFilename(), artistID);
 
